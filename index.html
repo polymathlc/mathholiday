@@ -992,6 +992,112 @@
     .lightbox-close svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 2.2; stroke-linecap: round; }
 
     /* ============================================================
+       8b. VIDEO REMARK OVERLAYS (addenda / edits over the video)
+       ============================================================ */
+    .video-overlay {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+      padding: 14px 16px;
+      z-index: 3;
+    }
+    .video-overlay-top { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+    .video-overlay-bottom { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; margin-top: auto; }
+    .video-remark {
+      max-width: min(94%, 660px);
+      background: rgba(18,18,18,0.8);
+      color: #fff;
+      font-size: 0.92rem;
+      line-height: 1.45;
+      padding: 9px 14px;
+      border-radius: 11px;
+      backdrop-filter: blur(3px);
+      -webkit-backdrop-filter: blur(3px);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.32);
+      border-left: 3px solid var(--accent-base);
+      animation: remarkIn 0.28s ease both;
+      pointer-events: auto;
+    }
+    .video-remark.pinned { border-left-color: var(--amber-base); }
+    .video-remark-label {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 0.6rem; font-weight: 700; letter-spacing: 0.06em;
+      text-transform: uppercase; opacity: 0.82; margin-bottom: 3px;
+    }
+    .video-remark-label svg { width: 11px; height: 11px; stroke: currentColor; fill: none; stroke-width: 2.2; }
+    @keyframes remarkIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* Remarks list under the video (jump-to / Drive fallback) */
+    .remarks-list { display: flex; flex-direction: column; gap: 8px; margin-top: var(--space-md); }
+    .remarks-list-head {
+      display: flex; align-items: center; gap: 8px;
+      font-size: var(--font-size-xs); font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.05em; color: var(--text-tertiary); margin-bottom: 2px;
+    }
+    .remarks-list-head svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; }
+    .remark-row {
+      display: flex; gap: 10px; align-items: flex-start;
+      padding: 8px 11px;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      background: var(--bg-secondary);
+      transition: all var(--transition-fast);
+    }
+    .remark-row.clickable { cursor: pointer; }
+    .remark-row.clickable:hover { border-color: var(--accent-base); background: var(--accent-bg); transform: translateX(2px); }
+    .remark-time-chip {
+      flex-shrink: 0; font-size: 0.72rem; font-weight: 700;
+      color: var(--accent-deep); background: var(--accent-bg);
+      border: 1px solid var(--accent-light); border-radius: var(--radius-full);
+      padding: 2px 10px; font-variant-numeric: tabular-nums; white-space: nowrap;
+    }
+    .remark-time-chip.pinned { color: var(--amber-dark); background: var(--amber-bg); border-color: #FFE082; }
+    .remark-row-text { font-size: var(--font-size-sm); color: var(--text-secondary); line-height: 1.5; }
+
+    /* Remarks authoring (admin editor) */
+    .remarks-editor { margin-top: var(--space-md); }
+    .remarks-editor-hint {
+      font-size: var(--font-size-xs); color: var(--text-tertiary);
+      line-height: 1.5; margin-bottom: var(--space-sm);
+    }
+    .remarks-editor-hint.warn { color: var(--amber-dark); }
+    .remark-edit-row {
+      display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+      padding: 10px; margin-bottom: 8px;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      background: var(--bg-secondary);
+    }
+    .remark-edit-badge {
+      flex-shrink: 0;
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em;
+      padding: 4px 9px; border-radius: var(--radius-full);
+    }
+    .remark-edit-badge.timed { background: var(--accent-bg); color: var(--accent-deep); }
+    .remark-edit-badge.pinned { background: var(--amber-bg); color: var(--amber-dark); }
+    .remark-edit-badge svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 2.2; }
+    .remark-time-input { flex: 0 0 92px; width: 92px; text-align: center; font-variant-numeric: tabular-nums; }
+    .remark-grab-btn {
+      flex-shrink: 0; padding: 7px 10px; font-size: var(--font-size-xs);
+    }
+    .remark-text-input { flex: 1 1 200px; min-width: 160px; }
+    .remark-pos-input { flex: 0 0 130px; }
+    .remark-del-btn {
+      flex-shrink: 0; width: 34px; height: 34px; padding: 0;
+      display: inline-flex; align-items: center; justify-content: center;
+      border-radius: var(--radius-md);
+      border: 1.5px solid #FFCDD2; background: var(--coral-bg); color: var(--coral-dark);
+      transition: all var(--transition-fast);
+    }
+    .remark-del-btn:hover { background: #FFCDD2; }
+    .remark-del-btn svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 2; }
+    .remarks-add-bar { display: flex; flex-wrap: wrap; gap: var(--space-sm); margin-top: var(--space-sm); }
+
+    /* ============================================================
        10. ADMIN EDITOR PANELS
        ============================================================ */
     .admin-banner {
@@ -1787,10 +1893,12 @@
       var ytId = yt[1];
       // preserve start time if present (?t= or &t= or #t=)
       var tMatch = url.match(/[?&#]t=(\d+)/);
-      var startParam = tMatch ? ("?start=" + tMatch[1]) : "";
+      // enablejsapi=1 lets the page read playback time for timed remark overlays
+      var ytParams = ["enablejsapi=1"];
+      if (tMatch) ytParams.unshift("start=" + tMatch[1]);
       return {
         type: "iframe",
-        embedUrl: "https://www.youtube.com/embed/" + ytId + startParam,
+        embedUrl: "https://www.youtube.com/embed/" + ytId + "?" + ytParams.join("&"),
         source: "youtube",
         label: "YouTube"
       };
@@ -2155,6 +2263,7 @@
   function normalizeQuestions() {
     STATE.questions.forEach(function (q) {
       if (!Array.isArray(q.answerImages)) q.answerImages = [];
+      if (!Array.isArray(q.videoRemarks)) q.videoRemarks = [];
     });
   }
 
@@ -2172,6 +2281,7 @@
         subtitle: b.subtitle,
         videoUrl: "",
         videoCaption: "",
+        videoRemarks: [],
         answerImages: [],
         answerKey: "",
         notes: "",
@@ -2196,6 +2306,16 @@
               name: im.name || "",
               w: im.w || 0,
               h: im.h || 0
+            };
+          }),
+          videoRemarks: (Array.isArray(q.videoRemarks) ? q.videoRemarks : []).map(function (r) {
+            return {
+              id: r.id || makeId(),
+              text: r.text || "",
+              mode: r.mode === "pinned" ? "pinned" : "timed",
+              time: Number(r.time) || 0,
+              dur: Number(r.dur) > 0 ? Number(r.dur) : 6,
+              pos: r.pos === "top" ? "top" : "bottom"
             };
           }),
           answerKey: q.answerKey || "",
@@ -2314,12 +2434,16 @@
 
     var area = document.getElementById("contentArea");
 
+    // Tear down any video player/poller from the previous render
+    teardownVideoControllers();
+
     if (STATE.isAdmin && STATE.editMode) {
       area.innerHTML = buildEditor(q, idx);
       wireEditor(q);
     } else {
       area.innerHTML = buildParentView(q, idx);
-      // wire admin banner toggle even in preview
+      // Mount remark overlays on the (read-only) video
+      setupVideoOverlays(area, q);
     }
   }
 
@@ -2388,6 +2512,7 @@
         '</div>' +
         renderVideoEmbed(video) +
         (q.videoCaption ? '<div class="video-caption"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>' + esc(q.videoCaption) + '</div>' : '') +
+        renderRemarksList(q, video) +
         '<div class="video-print-note">▶ Video recording available online — sign in to the portal to watch.</div>' +
       '</section>';
 
@@ -2443,6 +2568,7 @@
             '<source src="' + esc(video.embedUrl) + '">' +
             'Your browser does not support embedded video.' +
           '</video>' +
+          '<div class="video-overlay"></div>' +
         '</div>'
       );
     }
@@ -2452,6 +2578,7 @@
         '<iframe src="' + esc(video.embedUrl) + '" ' +
           'allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" ' +
           'allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>' +
+        '<div class="video-overlay"></div>' +
       '</div>'
     );
   }
@@ -2522,6 +2649,7 @@
         '</div>' +
         '<div class="editor-pane-label"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/></svg>Live preview</div>' +
         '<div id="videoPreviewBox">' + renderVideoEmbed(video) + '</div>' +
+        buildRemarksEditor(q, video) +
       '</section>';
 
     /* ---- BOX 3: Answer key (paste a screenshot / picture) ---- */
@@ -2644,8 +2772,14 @@
       var tag = document.getElementById("videoSourceTag");
       tag.className = "source-tag " + video.source;
       tag.textContent = video.label;
-      // update preview
-      document.getElementById("videoPreviewBox").innerHTML = renderVideoEmbed(video);
+      // rebuild preview + remount remark overlays on the new player
+      teardownVideoControllers();
+      var box = document.getElementById("videoPreviewBox");
+      box.innerHTML = renderVideoEmbed(video);
+      setupVideoOverlays(box, q);
+      // the new source may change whether timed remarks can auto-sync
+      refreshRemarksEditor(q);
+      updateRemarksHint(q);
     });
 
     capEl.addEventListener("input", function () { q.videoCaption = capEl.value; markDirty(); });
@@ -2672,6 +2806,11 @@
     var dz = document.getElementById("answerDropzone");
     if (dz) wireDropzone(dz, q);
     renderAnswerImagesEditor(q);
+
+    // Video remark overlays on the editor preview + authoring controls
+    var pv = document.getElementById("videoPreviewBox");
+    if (pv) setupVideoOverlays(pv, q);
+    wireRemarksEditor(q);
   }
 
   function handleTextareaTab(e) {
@@ -2955,6 +3094,374 @@
     lb.classList.remove("open");
     document.getElementById("lightboxImg").src = "";
   }
+
+  /* ================================================================
+     VIDEO REMARKS — text overlaid on the video as addenda / edits
+
+     Each question has videoRemarks: [{ id, text, mode, time, dur, pos }]
+       mode: "timed"  -> shows from `time` for `dur` seconds
+             "pinned" -> always visible while the video plays
+       pos:  "top" | "bottom"
+     Auto-sync needs the player's current time. That's available for
+     native <video> (Dropbox/MP4), YouTube (IFrame API) and Vimeo
+     (player SDK). Google Drive / generic iframes can't expose time, so
+     timed remarks there surface via the tap-to-show list under the video.
+     ================================================================ */
+  var ACTIVE_VIDEO = null;     // { q, overlay, frame, controller, lastTime, lastSig }
+  var MANUAL_FLASH = {};        // remarkId -> expiry ms (tap-to-show)
+  var _ytApiPromise = null;
+  var _vimeoApiPromise = null;
+
+  var ICON_CLOCK = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg>';
+  var ICON_PIN   = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="17" x2="12" y2="22"/><path d="M9 10.8V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v5.8c0 .9.4 1.7 1 2.2H8c.6-.5 1-1.3 1-2.2z"/></svg>';
+  var ICON_NOTE  = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4z"/></svg>';
+
+  /* ---- time helpers ---- */
+  function parseTimeToSeconds(str) {
+    if (str == null) return 0;
+    str = String(str).trim();
+    if (!str) return 0;
+    if (/^\d+$/.test(str)) return parseInt(str, 10);
+    var s = 0;
+    str.split(":").forEach(function (p) { s = s * 60 + (parseInt(p, 10) || 0); });
+    return s;
+  }
+  function formatSeconds(sec) {
+    sec = Math.max(0, Math.floor(sec || 0));
+    var h = Math.floor(sec / 3600), m = Math.floor((sec % 3600) / 60), s = sec % 60;
+    var mm = h ? String(m).padStart(2, "0") : String(m);
+    return (h ? h + ":" : "") + mm + ":" + String(s).padStart(2, "0");
+  }
+  function isSeekableSource(video) {
+    if (!video) return false;
+    return video.type === "video" || video.source === "youtube" || video.source === "vimeo";
+  }
+
+  /* ---- lifecycle ---- */
+  function teardownVideoControllers() {
+    if (ACTIVE_VIDEO && ACTIVE_VIDEO.controller) {
+      try { ACTIVE_VIDEO.controller.destroy(); } catch (e) {}
+    }
+    ACTIVE_VIDEO = null;
+  }
+
+  function setupVideoOverlays(scopeEl, q) {
+    if (!scopeEl) return;
+    var frame = scopeEl.querySelector(".video-frame");
+    if (!frame) return; // no playable video (empty state)
+    var overlay = frame.querySelector(".video-overlay");
+    if (!overlay) return;
+
+    var video = parseVideoUrl(q.videoUrl);
+    ACTIVE_VIDEO = { q: q, overlay: overlay, frame: frame, controller: null, lastTime: null, lastSig: "" };
+    refreshActiveOverlay(true); // pinned remarks show immediately
+
+    var vEl = frame.querySelector("video");
+    if (vEl) {
+      ACTIVE_VIDEO.controller = makeNativeController(vEl);
+    } else if (video.source === "youtube") {
+      var ytFrame = frame.querySelector("iframe");
+      if (ytFrame) makeYouTubeController(ytFrame);
+    } else if (video.source === "vimeo") {
+      var vmFrame = frame.querySelector("iframe");
+      if (vmFrame) makeVimeoController(vmFrame);
+    }
+    // Drive / generic: no time source — pinned + tap-to-show list only
+  }
+
+  function onVideoTime(t) {
+    if (!ACTIVE_VIDEO) return;
+    ACTIVE_VIDEO.lastTime = t;
+    refreshActiveOverlay(false);
+  }
+
+  /* ---- player controllers ---- */
+  function makeNativeController(vEl) {
+    var handler = function () { onVideoTime(vEl.currentTime || 0); };
+    vEl.addEventListener("timeupdate", handler);
+    vEl.addEventListener("seeked", handler);
+    return {
+      seekable: true,
+      getTime: function () { return vEl.currentTime || 0; },
+      seek: function (s) { try { vEl.currentTime = s; var p = vEl.play(); if (p && p.catch) p.catch(function () {}); } catch (e) {} },
+      destroy: function () { try { vEl.removeEventListener("timeupdate", handler); vEl.removeEventListener("seeked", handler); } catch (e) {} }
+    };
+  }
+
+  function makeYouTubeController(iframeEl) {
+    if (!iframeEl.id) iframeEl.id = "ytf_" + Math.random().toString(36).slice(2, 8);
+    var scope = ACTIVE_VIDEO;
+    loadYouTubeAPI().then(function (YT) {
+      if (ACTIVE_VIDEO !== scope) return; // navigated away before ready
+      var player;
+      try { player = new YT.Player(iframeEl.id, { events: {} }); } catch (e) { return; }
+      var iv = setInterval(function () {
+        if (ACTIVE_VIDEO !== scope) { clearInterval(iv); return; }
+        try { if (player && player.getCurrentTime) { var t = player.getCurrentTime(); if (typeof t === "number") onVideoTime(t); } } catch (e) {}
+      }, 300);
+      scope.controller = {
+        seekable: true,
+        getTime: function () { try { return player.getCurrentTime() || 0; } catch (e) { return scope.lastTime || 0; } },
+        seek: function (s) { try { player.seekTo(s, true); if (player.playVideo) player.playVideo(); } catch (e) {} },
+        destroy: function () { clearInterval(iv); try { if (player.destroy) player.destroy(); } catch (e) {} }
+      };
+    }).catch(function () { /* API blocked/offline: pinned + list still work */ });
+  }
+
+  function makeVimeoController(iframeEl) {
+    var scope = ACTIVE_VIDEO;
+    loadVimeoAPI().then(function (Vimeo) {
+      if (ACTIVE_VIDEO !== scope) return;
+      var player;
+      try { player = new Vimeo.Player(iframeEl); } catch (e) { return; }
+      var handler = function (data) { if (ACTIVE_VIDEO !== scope) return; onVideoTime((data && data.seconds) || 0); };
+      try { player.on("timeupdate", handler); } catch (e) {}
+      scope.controller = {
+        seekable: true,
+        getTime: function () { return scope.lastTime || 0; },
+        seek: function (s) { try { player.setCurrentTime(s); var p = player.play(); if (p && p.catch) p.catch(function () {}); } catch (e) {} },
+        destroy: function () { try { if (player.off) player.off("timeupdate", handler); } catch (e) {} }
+      };
+    }).catch(function () {});
+  }
+
+  function loadYouTubeAPI() {
+    if (window.YT && window.YT.Player) return Promise.resolve(window.YT);
+    if (_ytApiPromise) return _ytApiPromise;
+    _ytApiPromise = new Promise(function (resolve, reject) {
+      var prev = window.onYouTubeIframeAPIReady;
+      var settled = false;
+      window.onYouTubeIframeAPIReady = function () {
+        if (typeof prev === "function") { try { prev(); } catch (e) {} }
+        settled = true; resolve(window.YT);
+      };
+      var s = document.createElement("script");
+      s.src = "https://www.youtube.com/iframe_api";
+      s.onerror = function () { reject(new Error("YT API failed")); };
+      document.head.appendChild(s);
+      setTimeout(function () {
+        if (settled) return;
+        if (window.YT && window.YT.Player) resolve(window.YT); else reject(new Error("YT API timeout"));
+      }, 8000);
+    });
+    return _ytApiPromise;
+  }
+
+  function loadVimeoAPI() {
+    if (window.Vimeo && window.Vimeo.Player) return Promise.resolve(window.Vimeo);
+    if (_vimeoApiPromise) return _vimeoApiPromise;
+    _vimeoApiPromise = new Promise(function (resolve, reject) {
+      var s = document.createElement("script");
+      s.src = "https://player.vimeo.com/api/player.js";
+      s.onload = function () { if (window.Vimeo && window.Vimeo.Player) resolve(window.Vimeo); else reject(new Error("Vimeo API missing")); };
+      s.onerror = function () { reject(new Error("Vimeo API failed")); };
+      document.head.appendChild(s);
+      setTimeout(function () { if (window.Vimeo && window.Vimeo.Player) resolve(window.Vimeo); else reject(new Error("Vimeo API timeout")); }, 8000);
+    });
+    return _vimeoApiPromise;
+  }
+
+  /* ---- overlay rendering (only re-renders when the visible set changes) ---- */
+  function refreshActiveOverlay(force) {
+    if (!ACTIVE_VIDEO || !ACTIVE_VIDEO.overlay) return;
+    var q = ACTIVE_VIDEO.q, t = ACTIVE_VIDEO.lastTime, now = Date.now();
+    var top = [], bottom = [], sig = [];
+    (q.videoRemarks || []).forEach(function (r) {
+      if (!r.text) return;
+      var show = false;
+      if (r.mode === "pinned") show = true;
+      else if (t != null && r.time <= t && t < r.time + (r.dur || 6)) show = true;
+      if (!show && MANUAL_FLASH[r.id] && now < MANUAL_FLASH[r.id]) show = true;
+      if (!show) return;
+      sig.push(r.id);
+      var label = r.mode === "pinned" ? (ICON_PIN + " Note") : (ICON_CLOCK + " " + formatSeconds(r.time));
+      var bubble =
+        '<div class="video-remark ' + (r.mode === "pinned" ? "pinned" : "") + '">' +
+          '<div class="video-remark-label">' + label + '</div>' +
+          esc(r.text).replace(/\n/g, "<br>") +
+        '</div>';
+      if (r.pos === "top") top.push(bubble); else bottom.push(bubble);
+    });
+    var newSig = sig.join("|") + "@" + top.length + "," + bottom.length;
+    if (!force && newSig === ACTIVE_VIDEO.lastSig) return;
+    ACTIVE_VIDEO.lastSig = newSig;
+    ACTIVE_VIDEO.overlay.innerHTML =
+      '<div class="video-overlay-top">' + top.join("") + '</div>' +
+      '<div class="video-overlay-bottom">' + bottom.join("") + '</div>';
+  }
+
+  function flashRemark(r) {
+    if (!r) return;
+    MANUAL_FLASH[r.id] = Date.now() + (r.dur || 6) * 1000;
+    refreshActiveOverlay(true);
+    setTimeout(function () { refreshActiveOverlay(true); }, (r.dur || 6) * 1000 + 80);
+  }
+
+  /* ---- parent-view remarks list (jump-to / Drive fallback) ---- */
+  function renderRemarksList(q, video) {
+    var rs = q.videoRemarks || [];
+    if (!rs.length) return "";
+    var seekable = isSeekableSource(video);
+    var ordered = rs.map(function (r, i) { return { r: r, i: i }; });
+    ordered.sort(function (a, b) {
+      if (a.r.mode !== b.r.mode) return a.r.mode === "timed" ? -1 : 1;
+      return (a.r.time || 0) - (b.r.time || 0);
+    });
+    var rows = ordered.map(function (o) {
+      var r = o.r;
+      var chip = r.mode === "pinned"
+        ? '<span class="remark-time-chip pinned">Note</span>'
+        : '<span class="remark-time-chip">' + formatSeconds(r.time) + '</span>';
+      var title = (seekable && r.mode === "timed") ? "Jump to this moment" : "Show this remark";
+      return '<div class="remark-row clickable" onclick="remarkJump(\'' + q.id + '\',' + o.i + ')" title="' + title + '">' +
+        chip +
+        '<span class="remark-row-text">' + esc(r.text).replace(/\n/g, "<br>") + '</span>' +
+      '</div>';
+    }).join("");
+    return '<div class="remarks-list">' +
+      '<div class="remarks-list-head">' + ICON_NOTE + ' Tutor remarks &amp; addenda' + (seekable ? "" : " · tap to show") + '</div>' +
+      rows +
+    '</div>';
+  }
+
+  function remarkJump(qId, idx) {
+    var q = STATE.questions.find(function (x) { return x.id === qId; });
+    if (!q || !q.videoRemarks || !q.videoRemarks[idx]) return;
+    var r = q.videoRemarks[idx];
+    var ctrl = ACTIVE_VIDEO && ACTIVE_VIDEO.controller;
+    if (ctrl && ctrl.seekable && r.mode === "timed") {
+      ctrl.seek(r.time);
+      ACTIVE_VIDEO.lastTime = r.time;
+    }
+    flashRemark(r);
+  }
+
+  /* ---- admin authoring UI ---- */
+  function remarksHintFor(video) {
+    var hasVideo = video && video.type !== "none";
+    if (!hasVideo) return { text: "Add a video link above, then add remarks that appear over it.", warn: false };
+    if (isSeekableSource(video)) return { text: "Timed remarks pop up automatically at their timestamp while the video plays. Always-on notes stay visible the whole time.", warn: false };
+    return { text: "Heads-up: this video source (e.g. Google Drive) can’t report its play time, so timed remarks won’t auto-trigger — students see them as a tap-to-show list under the video. Always-on notes work on every source.", warn: true };
+  }
+
+  function buildRemarksEditor(q, video) {
+    var hint = remarksHintFor(video);
+    return '<div class="remarks-editor">' +
+      '<div class="editor-pane-label" style="margin-top:4px">' + ICON_NOTE + ' Remarks &amp; addenda over the video</div>' +
+      '<div class="remarks-editor-hint' + (hint.warn ? " warn" : "") + '" id="remarksHint">' + hint.text + '</div>' +
+      '<div id="remarksEditList">' + renderRemarksEditorRows(q, video) + '</div>' +
+      '<div class="remarks-add-bar">' +
+        '<button type="button" class="btn btn-secondary btn-sm" onclick="addRemark(\'timed\')">' + ICON_CLOCK + ' Timed remark</button>' +
+        '<button type="button" class="btn btn-secondary btn-sm" onclick="addRemark(\'pinned\')">' + ICON_PIN + ' Always-on note</button>' +
+      '</div>' +
+    '</div>';
+  }
+
+  function renderRemarksEditorRows(q, video) {
+    var seekable = isSeekableSource(video);
+    var rs = q.videoRemarks || [];
+    if (!rs.length) {
+      return '<div class="field-hint" style="margin:0 0 6px">No remarks yet. Add a timed remark or an always-on note below.</div>';
+    }
+    return rs.map(function (r, i) {
+      var badge = r.mode === "pinned"
+        ? '<span class="remark-edit-badge pinned">' + ICON_PIN + ' Note</span>'
+        : '<span class="remark-edit-badge timed">' + ICON_CLOCK + ' Timed</span>';
+      var timeBits = r.mode === "timed"
+        ? '<input type="text" class="text-input remark-time-input" data-field="time" value="' + esc(formatSeconds(r.time)) + '" placeholder="0:00" aria-label="Timestamp (m:ss)">' +
+          (seekable ? '<button type="button" class="btn btn-secondary btn-xs remark-grab-btn" data-act="grab" title="Use the video\'s current time">Use current</button>' : '')
+        : "";
+      return '<div class="remark-edit-row" data-idx="' + i + '">' +
+        badge + timeBits +
+        '<input type="text" class="text-input remark-text-input" data-field="text" value="' + esc(r.text) + '" placeholder="' + (r.mode === "pinned" ? "e.g. Correction: final answer is 42" : "e.g. I mis-stated this step — see below") + '">' +
+        '<select class="select-input remark-pos-input" data-field="pos" aria-label="Overlay position">' +
+          '<option value="bottom"' + (r.pos !== "top" ? " selected" : "") + '>Bottom</option>' +
+          '<option value="top"' + (r.pos === "top" ? " selected" : "") + '>Top</option>' +
+        '</select>' +
+        '<button type="button" class="remark-del-btn" data-act="del" title="Delete remark"><svg viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg></button>' +
+      '</div>';
+    }).join("");
+  }
+
+  function refreshRemarksEditor(q) {
+    var list = document.getElementById("remarksEditList");
+    if (!list) return;
+    list.innerHTML = renderRemarksEditorRows(q, parseVideoUrl(q.videoUrl));
+  }
+
+  function updateRemarksHint(q) {
+    var el = document.getElementById("remarksHint");
+    if (!el) return;
+    var hint = remarksHintFor(parseVideoUrl(q.videoUrl));
+    el.textContent = hint.text;
+    el.className = "remarks-editor-hint" + (hint.warn ? " warn" : "");
+  }
+
+  function wireRemarksEditor(q) {
+    var list = document.getElementById("remarksEditList");
+    if (!list) return;
+    list.addEventListener("input", function (e) {
+      var row = e.target.closest(".remark-edit-row"); if (!row) return;
+      var r = q.videoRemarks[parseInt(row.getAttribute("data-idx"), 10)]; if (!r) return;
+      var field = e.target.getAttribute("data-field");
+      if (field === "text") { r.text = e.target.value; markActiveDirty(); refreshActiveOverlay(true); }
+      else if (field === "time") { r.time = parseTimeToSeconds(e.target.value); markActiveDirty(); refreshActiveOverlay(true); }
+    });
+    list.addEventListener("change", function (e) {
+      var row = e.target.closest(".remark-edit-row"); if (!row) return;
+      var r = q.videoRemarks[parseInt(row.getAttribute("data-idx"), 10)]; if (!r) return;
+      if (e.target.getAttribute("data-field") === "pos") { r.pos = e.target.value === "top" ? "top" : "bottom"; markActiveDirty(); refreshActiveOverlay(true); }
+    });
+    list.addEventListener("click", function (e) {
+      var btn = e.target.closest("[data-act]"); if (!btn) return;
+      var row = btn.closest(".remark-edit-row"); if (!row) return;
+      var idx = parseInt(row.getAttribute("data-idx"), 10);
+      var r = q.videoRemarks[idx]; if (!r) return;
+      var act = btn.getAttribute("data-act");
+      if (act === "del") {
+        q.videoRemarks.splice(idx, 1);
+        markActiveDirty();
+        refreshRemarksEditor(q);
+        refreshActiveOverlay(true);
+      } else if (act === "grab") {
+        var t = (ACTIVE_VIDEO && ACTIVE_VIDEO.controller && ACTIVE_VIDEO.controller.getTime)
+          ? ACTIVE_VIDEO.controller.getTime()
+          : (ACTIVE_VIDEO ? (ACTIVE_VIDEO.lastTime || 0) : 0);
+        r.time = Math.max(0, Math.floor(t));
+        var inp = row.querySelector(".remark-time-input"); if (inp) inp.value = formatSeconds(r.time);
+        markActiveDirty();
+        refreshActiveOverlay(true);
+        toast("Captured " + formatSeconds(r.time), "success");
+      }
+    });
+  }
+
+  function addRemark(mode) {
+    var q = getActive(); if (!q) return;
+    if (!Array.isArray(q.videoRemarks)) q.videoRemarks = [];
+    var t = 0;
+    if (mode === "timed" && ACTIVE_VIDEO && ACTIVE_VIDEO.controller && ACTIVE_VIDEO.controller.getTime) {
+      t = Math.max(0, Math.floor(ACTIVE_VIDEO.controller.getTime()));
+    }
+    q.videoRemarks.push({ id: makeId(), text: "", mode: mode === "pinned" ? "pinned" : "timed", time: t, dur: 6, pos: "bottom" });
+    markActiveDirty();
+    refreshRemarksEditor(q);
+    refreshActiveOverlay(true);
+    var list = document.getElementById("remarksEditList");
+    if (list) {
+      var rows = list.querySelectorAll(".remark-edit-row");
+      var last = rows[rows.length - 1];
+      if (last) { var ti = last.querySelector(".remark-text-input"); if (ti) ti.focus(); }
+    }
+  }
+
+  /* Shared "mark unsaved" used by the remark editor (mirrors wireEditor's) */
+  function markActiveDirty() {
+    STATE.dirty = true;
+    var st = document.getElementById("saveStatus");
+    var txt = document.getElementById("saveStatusText");
+    if (st) { st.className = "save-status dirty"; if (txt) txt.textContent = "Unsaved changes"; }
+  }
   </script>
   <script>
   /* ================================================================
@@ -2971,6 +3478,7 @@
       subtitle: "",
       videoUrl: "",
       videoCaption: "",
+      videoRemarks: [],
       answerImages: [],
       answerKey: "",
       notes: "",
