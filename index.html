@@ -688,6 +688,7 @@
     .source-tag.dropbox { background: #E3F2FD; color: #1565C0; }
     .source-tag.gdrive { background: #FFF8E1; color: #F57F17; }
     .source-tag.vimeo { background: #E0F7FA; color: #00838F; }
+    .source-tag.answer { background: var(--blue-bg); color: var(--blue-dark); }
     .source-tag.none { background: var(--bg-tertiary); color: var(--text-tertiary); }
 
     /* ============================================================
@@ -800,6 +801,195 @@
       font-size: var(--font-size-md);
     }
     .final-answer svg { width: 18px; height: 18px; stroke: var(--accent-deep); fill: none; stroke-width: 2.2; }
+
+    /* ============================================================
+       9b. ANSWER KEY IMAGES — paste/drop zone, thumbnails, lightbox
+       ============================================================ */
+    /* Admin paste / drop zone */
+    .img-dropzone {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-sm);
+      text-align: center;
+      padding: var(--space-xl) var(--space-lg);
+      border: 2.5px dashed var(--border-medium);
+      border-radius: var(--radius-lg);
+      background: var(--bg-secondary);
+      color: var(--text-tertiary);
+      cursor: pointer;
+      transition: all var(--transition-base);
+      outline: none;
+    }
+    .img-dropzone:hover,
+    .img-dropzone:focus-visible,
+    .img-dropzone.hover {
+      border-color: var(--accent-base);
+      background: var(--accent-bg);
+      color: var(--accent-deep);
+      box-shadow: var(--shadow-sm);
+    }
+    .img-dropzone.dragover {
+      border-color: var(--accent-deep);
+      background: var(--accent-light);
+      color: var(--accent-deep);
+      transform: scale(1.008);
+      box-shadow: var(--shadow-md);
+    }
+    .img-dropzone-icon {
+      width: 54px; height: 54px;
+      border-radius: var(--radius-lg);
+      background: var(--bg-primary);
+      border: 1px solid var(--border-subtle);
+      display: flex; align-items: center; justify-content: center;
+      transition: all var(--transition-base);
+    }
+    .img-dropzone-icon svg { width: 26px; height: 26px; stroke: currentColor; fill: none; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+    .img-dropzone-title { font-size: var(--font-size-base); font-weight: 700; color: var(--text-secondary); }
+    .img-dropzone:hover .img-dropzone-title,
+    .img-dropzone.hover .img-dropzone-title,
+    .img-dropzone.dragover .img-dropzone-title { color: var(--accent-deep); }
+    .img-dropzone-sub { font-size: var(--font-size-xs); max-width: 380px; line-height: 1.55; }
+    .img-dropzone kbd {
+      font-family: 'SF Mono', Consolas, monospace;
+      font-size: 0.78em;
+      background: var(--bg-primary);
+      border: 1px solid var(--border-medium);
+      border-bottom-width: 2px;
+      border-radius: 5px;
+      padding: 1px 6px;
+      color: var(--text-secondary);
+    }
+
+    /* Editor thumbnails grid */
+    .answer-images-editor {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: var(--space-md);
+      margin-top: var(--space-md);
+    }
+    .answer-images-editor:empty { display: none; }
+    .ans-thumb {
+      position: relative;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background: var(--bg-secondary);
+      box-shadow: var(--shadow-xs);
+      aspect-ratio: 4 / 3;
+    }
+    .ans-thumb > img { width: 100%; height: 100%; object-fit: cover; display: block; cursor: zoom-in; }
+    .ans-thumb-remove {
+      position: absolute;
+      top: 6px; right: 6px;
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(20,20,20,0.62);
+      color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+      transition: all var(--transition-fast);
+    }
+    .ans-thumb-remove:hover { background: var(--coral-dark); transform: scale(1.08); }
+    .ans-thumb-remove svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 2.4; stroke-linecap: round; }
+    .ans-thumb-index {
+      position: absolute;
+      bottom: 6px; left: 6px;
+      font-size: 0.66rem;
+      font-weight: 700;
+      background: rgba(20,20,20,0.6);
+      color: #fff;
+      padding: 2px 8px;
+      border-radius: var(--radius-full);
+      pointer-events: none;
+    }
+    .ans-thumb.uploading {
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 8px;
+      border-style: dashed;
+      color: var(--text-tertiary);
+    }
+    .ans-upload-pct { font-size: var(--font-size-sm); font-weight: 700; color: var(--accent-deep); }
+
+    /* "Optional typed working" divider in the editor */
+    .answer-typed-divider {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      margin: var(--space-lg) 0 var(--space-md);
+      color: var(--text-tertiary);
+      font-size: var(--font-size-xs);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .answer-typed-divider::before,
+    .answer-typed-divider::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: var(--border-subtle);
+    }
+
+    /* Parent view — answer key images */
+    .answer-images {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-md);
+      margin-bottom: var(--space-md);
+    }
+    .answer-image-figure {
+      margin: 0;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background: var(--bg-secondary);
+      box-shadow: var(--shadow-xs);
+      cursor: zoom-in;
+      transition: box-shadow var(--transition-base);
+    }
+    .answer-image-figure:hover { box-shadow: var(--shadow-md); }
+    .answer-image-figure img { width: 100%; height: auto; display: block; }
+
+    /* Lightbox (full-size image viewer) */
+    .lightbox {
+      position: fixed; inset: 0;
+      background: rgba(10,10,10,0.9);
+      backdrop-filter: blur(3px);
+      -webkit-backdrop-filter: blur(3px);
+      display: flex; align-items: center; justify-content: center;
+      padding: var(--space-lg);
+      z-index: 300;
+      opacity: 0; pointer-events: none;
+      transition: opacity var(--transition-base);
+      cursor: zoom-out;
+    }
+    .lightbox.open { opacity: 1; pointer-events: auto; }
+    .lightbox img {
+      max-width: 96vw; max-height: 92vh;
+      width: auto; height: auto;
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-xl);
+      background: #fff;
+      cursor: default;
+    }
+    .lightbox-close {
+      position: fixed; top: 18px; right: 22px;
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(255,255,255,0.16);
+      color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      transition: background var(--transition-fast);
+    }
+    .lightbox-close:hover { background: rgba(255,255,255,0.3); }
+    .lightbox-close svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 2.2; stroke-linecap: round; }
 
     /* ============================================================
        10. ADMIN EDITOR PANELS
@@ -1350,7 +1540,8 @@
       .polymath-header, .sidebar, .mobile-bar, .admin-banner,
       .admin-only, .save-bar, .toast-stack, .version-badge,
       .print-btn, .sidebar-backdrop, .btn, .modal-overlay,
-      .editor-split, .paste-toolbar, .full-loader {
+      .editor-split, .paste-toolbar, .full-loader,
+      .img-dropzone, .answer-images-editor, .answer-typed-divider, .lightbox {
         display: none !important;
       }
       body { background: #fff !important; color: #1A1A1A !important; }
@@ -1375,6 +1566,12 @@
       .answer-key { color: #000 !important; }
       .content-eyebrow { border: 1px solid #ccc; color: #000 !important; background: #fff !important; }
       .final-answer { border: 1px solid #999 !important; background: #fff !important; color: #000 !important; }
+      .answer-image-figure {
+        page-break-inside: avoid;
+        border: 1px solid #ccc !important;
+        box-shadow: none !important;
+      }
+      .answer-image-figure img { max-height: 240mm; width: auto !important; margin: 0 auto; }
     }
     .video-print-note { display: none; }
 
@@ -1501,6 +1698,14 @@
     </div>
   </div>
 
+  <!-- ===== LIGHTBOX (full-size answer key image) ===== -->
+  <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <button class="lightbox-close" onclick="closeLightbox()" aria-label="Close">
+      <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <img id="lightboxImg" src="" alt="Answer key" onclick="event.stopPropagation()">
+  </div>
+
   <!-- ===== TOASTS ===== -->
   <div class="toast-stack" id="toastStack"></div>
 
@@ -1511,6 +1716,7 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
 
   <!-- APP SCRIPT INSERTED IN NEXT STEP -->
   <script>
@@ -1531,6 +1737,7 @@
   });
   var db = firebase.firestore();
   var auth = firebase.auth();
+  var storage = firebase.storage();
 
   /* ---------- Constants ---------- */
   var ADMIN_EMAIL = "chungzhikai@gmail.com";
@@ -1542,10 +1749,11 @@
     user: null,
     isAdmin: false,
     editMode: false,        // admin toggled edit-vs-preview
-    questions: [],          // [{id, title, subtitle, videoUrl, videoCaption, answerKey, notes, order}]
+    questions: [],          // [{id, title, subtitle, videoUrl, videoCaption, answerImages, answerKey, notes, order}]
     activeId: null,
     dirty: false,           // unsaved edits on the active question
-    loaded: false
+    loaded: false,
+    uploads: []             // transient in-progress image uploads (not persisted)
   };
 
   /* ---------- Utility: escape HTML ---------- */
@@ -1915,6 +2123,7 @@
           persistAll(true);
         }
       }
+      normalizeQuestions();
       sortQuestions();
       STATE.loaded = true;
       document.getElementById("fullLoader").classList.add("hide");
@@ -1941,6 +2150,14 @@
     STATE.questions.forEach(function (q, idx) { q.order = idx; });
   }
 
+  // Ensure every question has the fields the app expects (older docs may
+  // predate the image answer key, so backfill answerImages as an array).
+  function normalizeQuestions() {
+    STATE.questions.forEach(function (q) {
+      if (!Array.isArray(q.answerImages)) q.answerImages = [];
+    });
+  }
+
   function seedQuestions() {
     // Starter set so admin sees the structure immediately.
     var base = [
@@ -1955,6 +2172,7 @@
         subtitle: b.subtitle,
         videoUrl: "",
         videoCaption: "",
+        answerImages: [],
         answerKey: "",
         notes: "",
         order: idx
@@ -1971,6 +2189,15 @@
           subtitle: q.subtitle || "",
           videoUrl: q.videoUrl || "",
           videoCaption: q.videoCaption || "",
+          answerImages: (Array.isArray(q.answerImages) ? q.answerImages : []).map(function (im) {
+            return {
+              url: im.url || "",
+              path: im.path || "",
+              name: im.name || "",
+              w: im.w || 0,
+              h: im.h || 0
+            };
+          }),
           answerKey: q.answerKey || "",
           notes: q.notes || "",
           order: q.order
@@ -2012,7 +2239,7 @@
     nav.innerHTML = STATE.questions.map(function (q, idx) {
       var video = parseVideoUrl(q.videoUrl);
       var hasVideo = video.type !== "none";
-      var hasAnswer = !!(q.answerKey && q.answerKey.trim());
+      var hasAnswer = !!((q.answerKey && q.answerKey.trim()) || (q.answerImages && q.answerImages.length));
       var dotClass = hasVideo ? "has-video" : (hasAnswer ? "has-answer" : "empty");
       var metaBits = [];
       if (hasVideo) metaBits.push("Video");
@@ -2166,6 +2393,8 @@
 
     // ---- ANSWER KEY SECTION ----
     var answerHtml = renderMarkdown(q.answerKey);
+    var imagesHtml = renderAnswerImagesView(q);
+    var hasAnswer = !!(imagesHtml || answerHtml);
     html +=
       '<section class="section-card scale-in">' +
         '<div class="section-card-head">' +
@@ -2173,10 +2402,10 @@
             '<span class="section-icon answer"><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></span>' +
             'Answer Key' +
           '</div>' +
-          (answerHtml ? '<button class="btn btn-secondary btn-sm" onclick="window.print()"><svg viewBox="0 0 24 24"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>Print</button>' : '') +
+          (hasAnswer ? '<button class="btn btn-secondary btn-sm" onclick="window.print()"><svg viewBox="0 0 24 24"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>Print</button>' : '') +
         '</div>' +
-        (answerHtml
-          ? '<div class="answer-key">' + answerHtml + '</div>'
+        (hasAnswer
+          ? (imagesHtml + (answerHtml ? '<div class="answer-key">' + answerHtml + '</div>' : ''))
           : '<div class="answer-empty"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><div>The answer key for this question hasn\'t been posted yet.</div></div>') +
       '</section>';
 
@@ -2295,7 +2524,7 @@
         '<div id="videoPreviewBox">' + renderVideoEmbed(video) + '</div>' +
       '</section>';
 
-    /* ---- BOX 3: Answer key (copy-paste) ---- */
+    /* ---- BOX 3: Answer key (paste a screenshot / picture) ---- */
     html +=
       '<section class="section-card">' +
         '<div class="section-card-head">' +
@@ -2303,7 +2532,18 @@
             '<span class="section-icon answer"><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></span>' +
             'Answer key' +
           '</div>' +
+          '<span class="source-tag answer">Image</span>' +
         '</div>' +
+        // --- Image paste / drop zone (the main answer key) ---
+        '<div class="img-dropzone" id="answerDropzone" tabindex="0" role="button" aria-label="Paste or drop an answer key image">' +
+          '<div class="img-dropzone-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>' +
+          '<div class="img-dropzone-title">Hover here &amp; paste a screenshot</div>' +
+          '<div class="img-dropzone-sub">Press <kbd>Ctrl</kbd>/<kbd>&#8984;</kbd> + <kbd>V</kbd> to paste a picture, <strong>drag &amp; drop</strong> an image, or <strong>click to choose a file</strong>. Images are hosted on Firebase and shown to students as the answer key.</div>' +
+          '<input type="file" id="answerFileInput" accept="image/*" multiple hidden>' +
+        '</div>' +
+        '<div class="answer-images-editor" id="answerImagesEditor"></div>' +
+        // --- Optional typed working ---
+        '<div class="answer-typed-divider"><span>Optional — typed working</span></div>' +
         '<div class="paste-toolbar">' +
           '<span class="paste-toolbar-label">Quick insert</span>' +
           '<button class="btn btn-secondary btn-xs" onclick="insertSnippet(\'fldAnswer\',\'heading\')">Heading</button>' +
@@ -2427,6 +2667,11 @@
       prev.innerHTML = renderMarkdown(q.notes) || '<span style="color:var(--text-tertiary)">Nothing yet…</span>';
     });
     notesEl.addEventListener("keydown", handleTextareaTab);
+
+    // Answer-key image paste / drop zone
+    var dz = document.getElementById("answerDropzone");
+    if (dz) wireDropzone(dz, q);
+    renderAnswerImagesEditor(q);
   }
 
   function handleTextareaTab(e) {
@@ -2466,6 +2711,253 @@
   </script>
   <script>
   /* ================================================================
+     ANSWER KEY IMAGES — paste / drop / upload to Firebase Storage
+     Each question stores answerImages: [{ url, path, name, w, h }].
+     Images upload to Storage at  answer-keys/<questionId>/<file>  and
+     the download URL is saved to Firestore so students see the picture.
+     ================================================================ */
+
+  /* ---- Wire up a dropzone element for one question ---- */
+  function wireDropzone(dz, q) {
+    var input = document.getElementById("answerFileInput");
+
+    dz.addEventListener("click", function () { if (input) input.click(); });
+    dz.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); if (input) input.click(); }
+    });
+
+    // Highlight on hover (so "hover here and paste" reads as active)
+    dz.addEventListener("mouseenter", function () { dz.classList.add("hover"); });
+    dz.addEventListener("mouseleave", function () { dz.classList.remove("hover"); });
+
+    // Drag & drop
+    dz.addEventListener("dragover", function (e) { e.preventDefault(); dz.classList.add("dragover"); });
+    dz.addEventListener("dragleave", function (e) { e.preventDefault(); dz.classList.remove("dragover"); });
+    dz.addEventListener("drop", function (e) {
+      e.preventDefault();
+      dz.classList.remove("dragover");
+      if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length) {
+        handleImageFiles(e.dataTransfer.files);
+      }
+    });
+
+    // Paste while the zone itself is focused
+    dz.addEventListener("paste", function (e) { handlePasteEvent(e); });
+
+    // File picker
+    if (input) {
+      input.addEventListener("change", function () {
+        handleImageFiles(input.files);
+        input.value = "";
+      });
+    }
+  }
+
+  /* ---- Extract image(s) from a paste event and upload them ---- */
+  function handlePasteEvent(e) {
+    if (e.defaultPrevented) return;            // already handled (e.g. by the focused dropzone)
+    if (!STATE.isAdmin || !STATE.editMode) return;
+    var items = e.clipboardData && e.clipboardData.items;
+    if (!items) return;
+    var files = [];
+    for (var i = 0; i < items.length; i++) {
+      if (items[i].type && items[i].type.indexOf("image/") === 0) {
+        var f = items[i].getAsFile();
+        if (f) files.push(f);
+      }
+    }
+    if (!files.length) return;
+    e.preventDefault();
+    handleImageFiles(files);
+  }
+
+  /* ---- Global paste: while editing, pasting an image anywhere adds it
+         to the active question's answer key (so "hover + paste" just works) ---- */
+  document.addEventListener("paste", handlePasteEvent);
+
+  /* ---- Take a FileList, keep the images, upload each ---- */
+  function handleImageFiles(fileList) {
+    var q = getActive();
+    if (!q) return;
+    var files = Array.prototype.slice.call(fileList).filter(function (f) {
+      return f && f.type && f.type.indexOf("image/") === 0;
+    });
+    if (!files.length) { toast("That didn't look like an image.", "error"); return; }
+    files.forEach(function (file) { uploadAndAttachImage(file, q); });
+  }
+
+  /* ---- Downscale very large images (keeps math working legible while
+         keeping file sizes sane). Returns { blob, w, h }. ---- */
+  function processImage(file) {
+    return new Promise(function (resolve) {
+      var MAX = 2000;
+      var url = URL.createObjectURL(file);
+      var img = new Image();
+      img.onload = function () {
+        var w = img.naturalWidth, h = img.naturalHeight;
+        if (!w || !h || Math.max(w, h) <= MAX) {
+          URL.revokeObjectURL(url);
+          resolve({ blob: file, w: w, h: h });
+          return;
+        }
+        var scale = MAX / Math.max(w, h);
+        var cw = Math.round(w * scale), ch = Math.round(h * scale);
+        var canvas = document.createElement("canvas");
+        canvas.width = cw; canvas.height = ch;
+        canvas.getContext("2d").drawImage(img, 0, 0, cw, ch);
+        URL.revokeObjectURL(url);
+        canvas.toBlob(function (blob) {
+          resolve({ blob: blob || file, w: cw, h: ch });
+        }, "image/jpeg", 0.92);
+      };
+      img.onerror = function () { URL.revokeObjectURL(url); resolve({ blob: file, w: 0, h: 0 }); };
+      img.src = url;
+    });
+  }
+
+  /* ---- Upload one blob to Firebase Storage, reporting progress ---- */
+  function uploadAnswerImage(blob, q, onProgress) {
+    return new Promise(function (resolve, reject) {
+      try {
+        var type = blob.type || "image/png";
+        var ext = type.indexOf("png") >= 0 ? "png"
+                : (type.indexOf("jpeg") >= 0 || type.indexOf("jpg") >= 0) ? "jpg"
+                : type.indexOf("webp") >= 0 ? "webp"
+                : type.indexOf("gif") >= 0 ? "gif"
+                : "png";
+        var name = "img_" + Date.now().toString(36) + "_" + Math.random().toString(36).slice(2, 7) + "." + ext;
+        var path = "answer-keys/" + q.id + "/" + name;
+        var ref = storage.ref().child(path);
+        var task = ref.put(blob, { contentType: type });
+        task.on("state_changed",
+          function (snap) { if (onProgress && snap.totalBytes) onProgress(snap.bytesTransferred / snap.totalBytes); },
+          function (err) { reject(err); },
+          function () {
+            ref.getDownloadURL().then(function (dlUrl) {
+              resolve({ url: dlUrl, path: path, name: name });
+            }).catch(reject);
+          }
+        );
+      } catch (err) { reject(err); }
+    });
+  }
+
+  /* ---- Orchestrate: process → upload → attach → persist ---- */
+  function uploadAndAttachImage(file, q) {
+    if (file.size > 15 * 1024 * 1024) {
+      toast("That image is over 15 MB — please use a smaller picture.", "error");
+      return;
+    }
+    var tempId = "up_" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+    STATE.uploads.push({ tempId: tempId, progress: 0, qId: q.id });
+    renderAnswerImagesEditor(q);
+
+    processImage(file).then(function (r) {
+      return uploadAnswerImage(r.blob, q, function (p) {
+        var u = STATE.uploads.find(function (x) { return x.tempId === tempId; });
+        if (u) u.progress = p;
+        var pct = document.getElementById(tempId + "_pct");
+        if (pct) pct.textContent = Math.round(p * 100) + "%";
+      }).then(function (meta) {
+        meta.w = r.w; meta.h = r.h;
+        return meta;
+      });
+    }).then(function (meta) {
+      STATE.uploads = STATE.uploads.filter(function (x) { return x.tempId !== tempId; });
+      if (!Array.isArray(q.answerImages)) q.answerImages = [];
+      q.answerImages.push(meta);
+      return persistAll(true).then(function () {
+        renderAnswerImagesEditor(q);
+        renderSidebar();
+        toast("Answer key image added", "success");
+      });
+    }).catch(function (err) {
+      console.error("Image upload failed:", err);
+      STATE.uploads = STATE.uploads.filter(function (x) { return x.tempId !== tempId; });
+      renderAnswerImagesEditor(q);
+      var msg = "Upload failed. Please try again.";
+      if (err && err.code === "storage/unauthorized") {
+        msg = "Upload blocked by Storage rules — check Firebase Storage permissions.";
+      } else if (err && err.code === "storage/retry-limit-exceeded") {
+        msg = "Upload timed out. Check your connection and try again.";
+      }
+      toast(msg, "error");
+    });
+  }
+
+  /* ---- Render the admin thumbnail grid (saved images + in-progress) ---- */
+  function renderAnswerImagesEditor(q) {
+    var box = document.getElementById("answerImagesEditor");
+    if (!box) return;
+    var active = getActive();
+    if (active && q && active.id !== q.id) return; // editor moved on; image still saved
+
+    var html = "";
+    (q.answerImages || []).forEach(function (im, i) {
+      html +=
+        '<div class="ans-thumb">' +
+          '<img src="' + esc(im.url) + '" alt="Answer key ' + (i + 1) + '" data-full="' + esc(im.url) + '" onclick="openLightbox(this.dataset.full)">' +
+          '<span class="ans-thumb-index">' + (i + 1) + '</span>' +
+          '<button class="ans-thumb-remove" title="Remove image" onclick="removeAnswerImage(\'' + q.id + '\',' + i + ')">' +
+            '<svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>' +
+          '</button>' +
+        '</div>';
+    });
+    STATE.uploads.filter(function (u) { return u.qId === q.id; }).forEach(function (u) {
+      html +=
+        '<div class="ans-thumb uploading" id="' + u.tempId + '">' +
+          '<span class="spinner-sm"></span>' +
+          '<span class="ans-upload-pct" id="' + u.tempId + '_pct">' + Math.round(u.progress * 100) + '%</span>' +
+        '</div>';
+    });
+    box.innerHTML = html;
+  }
+
+  /* ---- Remove an answer image (from the list, Firestore, and Storage) ---- */
+  function removeAnswerImage(qId, index) {
+    var q = STATE.questions.find(function (x) { return x.id === qId; });
+    if (!q || !q.answerImages || !q.answerImages[index]) return;
+    if (!confirm("Remove this answer key image? This cannot be undone.")) return;
+
+    var removed = q.answerImages.splice(index, 1)[0];
+    renderAnswerImagesEditor(q);
+    persistAll(true).then(function () {
+      renderSidebar();
+      toast("Image removed", "info");
+    });
+    // Best-effort delete of the underlying file
+    if (removed && removed.path) {
+      storage.ref().child(removed.path).delete().catch(function (err) {
+        console.warn("Could not delete storage object:", err);
+      });
+    }
+  }
+
+  /* ---- Parent-facing answer key images ---- */
+  function renderAnswerImagesView(q) {
+    if (!q.answerImages || !q.answerImages.length) return "";
+    return '<div class="answer-images">' + q.answerImages.map(function (im, i) {
+      return '<figure class="answer-image-figure" data-full="' + esc(im.url) + '" ' +
+             'onclick="openLightbox(this.dataset.full)" title="Click to enlarge">' +
+               '<img src="' + esc(im.url) + '" alt="Answer key ' + (i + 1) + '" loading="lazy">' +
+             '</figure>';
+    }).join("") + '</div>';
+  }
+
+  /* ---- Lightbox ---- */
+  function openLightbox(url) {
+    if (!url) return;
+    document.getElementById("lightboxImg").src = url;
+    document.getElementById("lightbox").classList.add("open");
+  }
+  function closeLightbox() {
+    var lb = document.getElementById("lightbox");
+    lb.classList.remove("open");
+    document.getElementById("lightboxImg").src = "";
+  }
+  </script>
+  <script>
+  /* ================================================================
      ADD / DELETE QUESTIONS
      ================================================================ */
   function addQuestion() {
@@ -2479,6 +2971,7 @@
       subtitle: "",
       videoUrl: "",
       videoCaption: "",
+      answerImages: [],
       answerKey: "",
       notes: "",
       order: STATE.questions.length
@@ -2671,8 +3164,8 @@
   });
 
   document.addEventListener("keydown", function (e) {
-    // Esc closes modal
-    if (e.key === "Escape") closeConfirm();
+    // Esc closes modal + lightbox
+    if (e.key === "Escape") { closeConfirm(); closeLightbox(); }
     // Cmd/Ctrl+S saves when in editor
     if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "s") {
       if (STATE.isAdmin && STATE.editMode) {
